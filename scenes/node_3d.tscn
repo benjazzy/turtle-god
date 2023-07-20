@@ -1,0 +1,166 @@
+[gd_scene load_steps=15 format=3 uid="uid://uqoqakdpw3e7"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_ov0wr"]
+[ext_resource type="Script" path="res://scripts/free_look_camera.gd" id="2_0fp0c"]
+[ext_resource type="PackedScene" uid="uid://ciiqw7ki42lya" path="res://turtle.res" id="2_wu7ac"]
+[ext_resource type="Script" path="res://scripts/Turtle Spawner.gd" id="3_5fe7k"]
+[ext_resource type="Material" uid="uid://dobh8sl8q03rp" path="res://materials/block_transparent.tres" id="3_h7d6v"]
+[ext_resource type="Texture2D" uid="uid://c4o6nhlvospx" path="res://textures/connected.png" id="5_aqgfc"]
+[ext_resource type="Script" path="res://scripts/Address.gd" id="6_1y8f2"]
+[ext_resource type="Texture2D" uid="uid://c1yi108yhy2le" path="res://textures/disconnected.png" id="6_b51n2"]
+[ext_resource type="Texture2D" uid="uid://bcnaetkegufdb" path="res://textures/connecting.png" id="8_32mca"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r02fw"]
+
+[sub_resource type="Sky" id="Sky_f0qnu"]
+sky_material = SubResource("ProceduralSkyMaterial_r02fw")
+
+[sub_resource type="Environment" id="Environment_c855c"]
+background_mode = 2
+sky = SubResource("Sky_f0qnu")
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_wf78l"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dgxgd"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Node" type="Node" parent="." node_paths=PackedStringArray("connect_window", "connect_address", "connected_icon", "connecting_icon", "disconnected_icon")]
+script = ExtResource("1_ov0wr")
+connect_window = NodePath("../ConnectWindow")
+connect_address = NodePath("../ConnectWindow/Control/Address")
+connected_icon = NodePath("../MainUI/HBoxContainer/Panel/MarginContainer/Control/ConnectedIcon")
+connecting_icon = NodePath("../MainUI/HBoxContainer/Panel/MarginContainer/Control/ConnectingIcon")
+disconnected_icon = NodePath("../MainUI/HBoxContainer/Panel/MarginContainer/Control/DisconnectedIcon")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.273313, -0.895194, 0.352034, -0.196673, 0.410242, 0.890517, -0.941605, 0.174154, -0.288185, 0, 2.42089, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.216866, 0, 0.976201, 0, 1, 0, -0.976201, 0, -0.216866, 4.17778, 0.951013, 0)
+script = ExtResource("2_0fp0c")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_c855c")
+camera_attributes = SubResource("CameraAttributesPractical_wf78l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+mesh = SubResource("BoxMesh_dgxgd")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("3_h7d6v")
+
+[node name="Turtle Spawner" type="Node3D" parent="." node_paths=PackedStringArray("nomral_turtle")]
+script = ExtResource("3_5fe7k")
+nomral_turtle = NodePath("../Turtle")
+
+[node name="Turtle" parent="." instance=ExtResource("2_wu7ac")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+skeleton = NodePath("../Node")
+
+[node name="ConnectWindow" type="Window" parent="."]
+initial_position = 1
+size = Vector2i(282, 31)
+
+[node name="Control" type="Control" parent="ConnectWindow"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 282.0
+offset_bottom = 31.0
+
+[node name="ConnectButton" type="Button" parent="ConnectWindow/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Connect"
+
+[node name="Address" type="LineEdit" parent="ConnectWindow/Control"]
+custom_minimum_size = Vector2(200, 31)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 67.0625
+grow_vertical = 0
+script = ExtResource("6_1y8f2")
+
+[node name="MainUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainUI"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="Panel" type="Panel" parent="MainUI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MainUI/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Control" type="Control" parent="MainUI/HBoxContainer/Panel/MarginContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="ConnectedIcon" type="Sprite2D" parent="MainUI/HBoxContainer/Panel/MarginContainer/Control"]
+visible = false
+position = Vector2(10, 10)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_aqgfc")
+
+[node name="DisconnectedIcon" type="Sprite2D" parent="MainUI/HBoxContainer/Panel/MarginContainer/Control"]
+position = Vector2(10, 10)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_b51n2")
+
+[node name="ConnectingIcon" type="Sprite2D" parent="MainUI/HBoxContainer/Panel/MarginContainer/Control"]
+visible = false
+position = Vector2(10, 10)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_32mca")
+
+[node name="Control2" type="Control" parent="MainUI/HBoxContainer/Panel/MarginContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Button" type="Button" parent="MainUI/HBoxContainer/Panel/MarginContainer/Control2"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "T"
+
+[connection signal="turtle_update" from="Node" to="Turtle Spawner" method="_update_turtle"]
+[connection signal="pressed" from="ConnectWindow/Control/ConnectButton" to="Node" method="_connect"]
+[connection signal="enter_pressed" from="ConnectWindow/Control/Address" to="Node" method="_connect"]
+[connection signal="pressed" from="MainUI/HBoxContainer/Panel/MarginContainer/Control2/Button" to="Node" method="_on_button_pressed"]

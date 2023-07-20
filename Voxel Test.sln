@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voxel Test", "Voxel Test.csproj", "{CB5DA674-3AC1-4042-B4EE-7598426EAC4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB5DA674-3AC1-4042-B4EE-7598426EAC4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB5DA674-3AC1-4042-B4EE-7598426EAC4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB5DA674-3AC1-4042-B4EE-7598426EAC4C}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{CB5DA674-3AC1-4042-B4EE-7598426EAC4C}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{CB5DA674-3AC1-4042-B4EE-7598426EAC4C}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{CB5DA674-3AC1-4042-B4EE-7598426EAC4C}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal

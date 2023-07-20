@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cml305cebcurw"
+path="res://.godot/imported/turtle.obj-5728eb8bef1221b446abf3dd90dee341.mesh"
+
+[deps]
+
+files=["res://.godot/imported/turtle.obj-5728eb8bef1221b446abf3dd90dee341.mesh"]
+
+source_file="res://meshes/turtle.obj"
+dest_files=["res://.godot/imported/turtle.obj-5728eb8bef1221b446abf3dd90dee341.mesh", "res://.godot/imported/turtle.obj-5728eb8bef1221b446abf3dd90dee341.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
