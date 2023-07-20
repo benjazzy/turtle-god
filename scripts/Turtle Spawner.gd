@@ -34,17 +34,35 @@ func _on_button_pressed():
 #		new_turtle.visible = true
 #		add_child(new_turtle)
 
+func heading_to_rotation(char: String):
+	match char:
+		"n":
+			return deg_to_rad(90)
+		"s": 
+			return deg_to_rad(270)
+		"e": 
+			return deg_to_rad(0)
+		"w":
+			return deg_to_rad(180)
+		
 
 func _update_turtle(turtle: Dictionary):
 	print("Received turtle data:", turtle)
 	var coordinates = turtle.coordinates
 	var new_position = Vector3(coordinates.x, coordinates.y, coordinates.z)
+	var rotation = heading_to_rotation(turtle.heading)
+	if rotation == null:
+		return
+		
 	var child = self.find_child("turtle_%s" % turtle.name, true, false)
 	if child == null:
 		var new_turtle = self.nomral_turtle.duplicate()
-		new_turtle.position = new_position
 		new_turtle.name = "turtle_%s" % turtle.name
+		new_turtle.global_rotation = Vector3(0, rotation, 0)
+		new_turtle.position = new_position
+		
 		new_turtle.visible = true
 		self.add_child(new_turtle)
 	else:
 		child.position = new_position
+		child.global_rotation = Vector3(0, rotation, 0)
