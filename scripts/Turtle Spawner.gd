@@ -56,20 +56,19 @@ func heading_to_rotation(char: String):
 			return deg_to_rad(180)
 		
 
-func _update_turtle(turtle: Dictionary):
-	print("Received turtle data:", turtle)
-	var coordinates = turtle.coordinates
+func _update_turtle(name: String, coordinates: Dictionary, heading: String):
+	print("Received turtle data: %s, %s, %s", name, coordinates, heading)
 	var new_position = Vector3(coordinates.x, coordinates.y, coordinates.z)
-	var rotation = heading_to_rotation(turtle.heading)
+	var rotation = heading_to_rotation(heading)
 	if rotation == null:
 		return
 		
-	var child = self.find_child(turtle.name, true, false)
+	var child = self.find_child(name, true, false)
 	if child == null:
 		#var new_turtle = self.nomral_turtle.duplicate(DUPLICATE_GROUPS | DUPLICATE_SCRIPTS | DUPLICATE_SIGNALS)
 		var new_turtle = preload("res://turtle.tscn").instantiate()
-		new_turtle.setup_window(turtle.name)
-		new_turtle.name = turtle.name
+		new_turtle.setup_window(name)
+		new_turtle.name = name
 		new_turtle.global_rotation = Vector3(0, rotation, 0)
 		new_turtle.move(new_position)
 		

@@ -97,6 +97,11 @@ size_flags_vertical = 0
 text = "0
 "
 
+[node name="MovementLabel" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Movement"
+
 [node name="ControlButtons" type="HBoxContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4

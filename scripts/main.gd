@@ -7,7 +7,7 @@ extends Node
 @export var connecting_icon: Sprite2D
 @export var disconnected_icon: Sprite2D
 
-signal turtle_update(turtle: Dictionary)
+signal turtle_update(name: String, coordinates: Dictionary, heading: String)
 
 var connection: StreamPeerTCP = StreamPeerTCP.new()
 
@@ -66,7 +66,12 @@ func _connect():
 		printerr("Problem connecting")
 		return
 	
-	self.connection.put_string("test")
+	self.connection.poll()
+	if self.connection.get_status() == StreamPeerTCP.STATUS_CONNECTED:
+		var command = {
+			"type": "get_turtles",
+		}
+		self.send_command(command)
 	
 func recv_messages():
 	var available = self.connection.get_available_bytes()
@@ -85,7 +90,15 @@ func recv_messages():
 		
 	if self.buffer.size() < 4:
 		return
+		
+	# Each call of self.decode_message() will handle one message. 
+	# When there are not other messages to handle decode_message will return false.
+	while self.decode_message():
+		pass
 	
+	print("Bytes left: %s" % self.buffer.size())
+	
+func decode_message():
 	var pos = -1
 	
 	for i in self.buffer.size() - 3:
@@ -94,7 +107,7 @@ func recv_messages():
 			break
 	
 	if pos == -1:
-		return
+		return false
 	
 	var message_buffer = []
 	for i in pos + 4:
@@ -113,7 +126,7 @@ func recv_messages():
 	else:
 		printerr("Problem parsing json")
 	
-	print("Bytes left: %s" % self.buffer.size())
+	return true
 
 func check_next_bytes(buff_i: int):
 	for mark_i in self.mark.size():	
@@ -124,12 +137,23 @@ func check_next_bytes(buff_i: int):
 	return true
 
 func handle_message(message: Dictionary):
+	print("Handling message:", message)
 	match message.type:
 		"turtles":
 			for turtle in message.turtles:
 				print("Emitting turtle_update signal with:", turtle)
-				self.turtle_update.emit(turtle)
-				
+				self.turtle_update.emit(turtle.name, turtle.coordinates, turtle.heading)
+		"turtle_event":
+			print("Got turtle event:", message)
+			var name = message.name
+			var event = message.event
+			match event.type:
+				"report":
+					print("Got report")
+					var coordinates = event.position
+					var heading = event.heading
+					self.turtle_update.emit(name, coordinates, heading)
+					
 func send_command(command: Dictionary):
 	var command_string = JSON.stringify(command)
 	var bytes = command_string.to_utf8_buffer()
