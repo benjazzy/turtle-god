@@ -1,0 +1,146 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2oh4h7apakb"]
+
+[ext_resource type="Script" path="res://scripts/turtle.gd" id="1_uxhas"]
+[ext_resource type="PackedScene" uid="uid://ciiqw7ki42lya" path="res://turtle.res" id="2_6i0b1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eddiy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vhp1k"]
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_64f41"]
+font_color = Color(1, 1, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_lduxv"]
+font_color = Color(0, 0, 1, 1)
+
+[node name="Turtle" type="Node3D" node_paths=PackedStringArray("info_window", "position_x", "position_y", "position_z")]
+script = ExtResource("1_uxhas")
+info_window = NodePath("TurtleInfo")
+position_x = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates/XPosition")
+position_y = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates/YPosition")
+position_z = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates/ZPosition")
+
+[node name="TurtleMesh" parent="." instance=ExtResource("2_6i0b1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+skeleton = NodePath("../../Node")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_eddiy")
+
+[node name="TurtleInfo" type="Window" parent="."]
+position = Vector2i(50, 50)
+size = Vector2i(250, 500)
+
+[node name="Control" type="Control" parent="TurtleInfo"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TurtleInfo/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TurtleInfo/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Coordinates" type="HBoxContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="XLabel" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "X:"
+label_settings = SubResource("LabelSettings_vhp1k")
+
+[node name="XPosition" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates"]
+layout_mode = 2
+text = "0"
+
+[node name="YLabel" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = " Y:"
+label_settings = SubResource("LabelSettings_64f41")
+
+[node name="YPosition" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "0
+"
+
+[node name="ZLabel" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = " Z:"
+label_settings = SubResource("LabelSettings_lduxv")
+
+[node name="ZPosition" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "0
+"
+
+[node name="ControlButtons" type="HBoxContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="UpDownButtons" type="VBoxContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons"]
+layout_mode = 2
+
+[node name="Up" type="Button" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/UpDownButtons"]
+layout_mode = 2
+text = "Up"
+
+[node name="Down" type="Button" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/UpDownButtons"]
+layout_mode = 2
+text = "Down"
+
+[node name="FBLRButtons" type="HBoxContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons"]
+layout_mode = 2
+
+[node name="Left" type="Button" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons"]
+layout_mode = 2
+text = "L"
+
+[node name="ForwardBackButtons" type="VBoxContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons"]
+layout_mode = 2
+
+[node name="Forward" type="Button" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons/ForwardBackButtons"]
+layout_mode = 2
+text = "F"
+
+[node name="Back" type="Button" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons/ForwardBackButtons"]
+layout_mode = 2
+text = "B"
+
+[node name="Right" type="Button" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons"]
+layout_mode = 2
+text = "R"
+
+[connection signal="mouse_entered" from="Area3D" to="." method="_on_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="Area3D" to="." method="_on_area_3d_mouse_exited"]
+[connection signal="close_requested" from="TurtleInfo" to="." method="_on_turtle_info_close_requested"]
+[connection signal="pressed" from="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/UpDownButtons/Up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/UpDownButtons/Down" to="." method="_on_down_pressed"]
+[connection signal="pressed" from="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons/Left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons/ForwardBackButtons/Forward" to="." method="_on_forward_pressed"]
+[connection signal="pressed" from="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons/ForwardBackButtons/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="TurtleInfo/Control/MarginContainer/VBoxContainer/ControlButtons/FBLRButtons/Right" to="." method="_on_right_pressed"]

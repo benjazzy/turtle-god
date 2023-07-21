@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://uqoqakdpw3e7"]
+[gd_scene load_steps=14 format=3 uid="uid://uqoqakdpw3e7"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_ov0wr"]
 [ext_resource type="Script" path="res://scripts/free_look_camera.gd" id="2_0fp0c"]
-[ext_resource type="PackedScene" uid="uid://ciiqw7ki42lya" path="res://turtle.res" id="2_wu7ac"]
 [ext_resource type="Script" path="res://scripts/Turtle Spawner.gd" id="3_5fe7k"]
 [ext_resource type="Material" uid="uid://dobh8sl8q03rp" path="res://materials/block_transparent.tres" id="3_h7d6v"]
 [ext_resource type="Texture2D" uid="uid://c4o6nhlvospx" path="res://textures/connected.png" id="5_aqgfc"]
@@ -51,14 +50,9 @@ mesh = SubResource("BoxMesh_dgxgd")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_h7d6v")
 
-[node name="Turtle Spawner" type="Node3D" parent="." node_paths=PackedStringArray("nomral_turtle")]
+[node name="Turtle Spawner" type="Node3D" parent="." node_paths=PackedStringArray("connection")]
 script = ExtResource("3_5fe7k")
-nomral_turtle = NodePath("../Turtle")
-
-[node name="Turtle" parent="." instance=ExtResource("2_wu7ac")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-visible = false
-skeleton = NodePath("../Node")
+connection = NodePath("../Node")
 
 [node name="ConnectWindow" type="Window" parent="."]
 initial_position = 1

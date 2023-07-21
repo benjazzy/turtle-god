@@ -1,7 +1,9 @@
 extends Node3D
 
+@export var connection: Node
+
 @export_category("Turtle Resource")
-@export var nomral_turtle: MeshInstance3D
+@export var nomral_turtle: Node3D
 
 var id: int = 0
 
@@ -22,7 +24,15 @@ func _on_button_pressed():
 	self.id += 1
 	turtle.visible = true
 	add_child(turtle)
-
+	
+func _on_turtle_move_button(name: String, direction: String):
+	print("Turtle %s moving %s" % [name, direction])
+	var command = {
+		"type": "move",
+		"name": name,
+		"direction": direction,
+	}
+	self.connection.send_command(command)
 
 #func _on_node_turtle_update(turtle):
 #	var child = self.find_child("turtle_%s" % turtle.name)
@@ -54,15 +64,18 @@ func _update_turtle(turtle: Dictionary):
 	if rotation == null:
 		return
 		
-	var child = self.find_child("turtle_%s" % turtle.name, true, false)
+	var child = self.find_child(turtle.name, true, false)
 	if child == null:
-		var new_turtle = self.nomral_turtle.duplicate()
-		new_turtle.name = "turtle_%s" % turtle.name
+		#var new_turtle = self.nomral_turtle.duplicate(DUPLICATE_GROUPS | DUPLICATE_SCRIPTS | DUPLICATE_SIGNALS)
+		var new_turtle = preload("res://turtle.tscn").instantiate()
+		new_turtle.setup_window(turtle.name)
+		new_turtle.name = turtle.name
 		new_turtle.global_rotation = Vector3(0, rotation, 0)
-		new_turtle.position = new_position
+		new_turtle.move(new_position)
 		
 		new_turtle.visible = true
+		new_turtle.move_signal.connect(self._on_turtle_move_button)
 		self.add_child(new_turtle)
 	else:
-		child.position = new_position
+		child.move(new_position)
 		child.global_rotation = Vector3(0, rotation, 0)

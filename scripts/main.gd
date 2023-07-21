@@ -129,16 +129,18 @@ func handle_message(message: Dictionary):
 			for turtle in message.turtles:
 				print("Emitting turtle_update signal with:", turtle)
 				self.turtle_update.emit(turtle)
-
-func _on_button_pressed():
-	var request = {
-		"type": "get_turtles",
-	}
-	
-	var message = JSON.stringify(request)
-	var bytes = message.to_utf8_buffer()
+				
+func send_command(command: Dictionary):
+	var command_string = JSON.stringify(command)
+	var bytes = command_string.to_utf8_buffer()
 	for b in self.mark:
 		bytes.append(b)
 	var error = self.connection.put_data(bytes)
 	if error != OK:
 		printerr("Problem sending request: %e" % error)
+
+func _on_button_pressed():
+	var command = {
+		"type": "get_turtles",
+	}
+	self.send_command(command)
