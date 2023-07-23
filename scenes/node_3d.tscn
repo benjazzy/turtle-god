@@ -154,6 +154,7 @@ offset_right = 8.0
 offset_bottom = 8.0
 text = "T"
 
+[connection signal="turtle_status" from="Node" to="Turtle Spawner" method="_on_node_turtle_status"]
 [connection signal="turtle_update" from="Node" to="Turtle Spawner" method="_update_turtle"]
 [connection signal="pressed" from="ConnectWindow/Control/ConnectButton" to="Node" method="_connect"]
 [connection signal="enter_pressed" from="ConnectWindow/Control/Address" to="Node" method="_connect"]

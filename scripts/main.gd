@@ -8,6 +8,7 @@ extends Node
 @export var disconnected_icon: Sprite2D
 
 signal turtle_update(name: String, coordinates: Dictionary, heading: String)
+signal turtle_status(name: String, status: TurtleSpawner.Status)
 
 var connection: StreamPeerTCP = StreamPeerTCP.new()
 
@@ -121,7 +122,6 @@ func decode_message():
 	var error = json.parse(message_string)
 	if error == OK:
 		var message = json.data
-		print(message)
 		self.handle_message(message)
 	else:
 		printerr("Problem parsing json")
@@ -141,19 +141,27 @@ func handle_message(message: Dictionary):
 	match message.type:
 		"turtles":
 			for turtle in message.turtles:
-				print("Emitting turtle_update signal with:", turtle)
+				#print("Emitting turtle_update signal with:", turtle)
 				self.turtle_update.emit(turtle.name, turtle.coordinates, turtle.heading)
 		"turtle_event":
-			print("Got turtle event:", message)
+			#print("Got turtle event:", message)
 			var name = message.name
 			var event = message.event
 			match event.type:
 				"report":
-					print("Got report")
 					var coordinates = event.position
 					var heading = event.heading
 					self.turtle_update.emit(name, coordinates, heading)
-					
+		"turtle_connected":
+			print("Got turtle connected for:", message.name)
+			self.turtle_status.emit(message.name, TurtleSpawner.Status.CONNECTED)
+		"turtle_disconnected":
+			print("Got turtle disconnected for:", message.name)
+			self.turtle_status.emit(message.name, TurtleSpawner.Status.DISCONNECTED)
+		_:
+			printerr("Got unknown message")
+		
+		
 func send_command(command: Dictionary):
 	var command_string = JSON.stringify(command)
 	var bytes = command_string.to_utf8_buffer()
@@ -161,7 +169,7 @@ func send_command(command: Dictionary):
 		bytes.append(b)
 	var error = self.connection.put_data(bytes)
 	if error != OK:
-		printerr("Problem sending request: %e" % error)
+		printerr("Problem sending request: %s" % error)
 
 func _on_button_pressed():
 	var command = {

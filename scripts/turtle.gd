@@ -2,10 +2,15 @@ extends Node3D
 
 signal move_signal(name: String, direction: String)
 
+@export_category("Info")
 @export var info_window: Window
 @export var position_x: Label
 @export var position_y: Label
 @export var position_z: Label
+
+@export_category("Status")
+@export var ConnectedStatusPanel: PanelContainer
+@export var DisconnectedStatusPanel: PanelContainer
 
 var hovering = false
 
@@ -34,6 +39,15 @@ func _input(event):
 #		if event.button_index == MOUSE_BUTTON_LEFT:
 #			print("Click")
 
+func set_connected():
+	print("Connected")
+	self.ConnectedStatusPanel.show()
+	self.DisconnectedStatusPanel.hide()
+
+func set_disconnected():
+	print("Disconnected")
+	self.ConnectedStatusPanel.hide()
+	self.DisconnectedStatusPanel.show()
 
 func _on_area_3d_mouse_entered():
 	self.hovering = true

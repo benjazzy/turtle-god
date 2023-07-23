@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2oh4h7apakb"]
+[gd_scene load_steps=9 format=3 uid="uid://c2oh4h7apakb"]
 
 [ext_resource type="Script" path="res://scripts/turtle.gd" id="1_uxhas"]
 [ext_resource type="PackedScene" uid="uid://ciiqw7ki42lya" path="res://turtle.res" id="2_6i0b1"]
+[ext_resource type="StyleBox" uid="uid://ddx0fraehmvfu" path="res://connected_status_style.tres" id="3_omv4l"]
+[ext_resource type="StyleBox" uid="uid://q5olkrn5a7gr" path="res://disconnected_status_style.tres" id="4_fludr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_eddiy"]
 
@@ -14,12 +16,14 @@ font_color = Color(1, 1, 0, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_lduxv"]
 font_color = Color(0, 0, 1, 1)
 
-[node name="Turtle" type="Node3D" node_paths=PackedStringArray("info_window", "position_x", "position_y", "position_z")]
+[node name="Turtle" type="Node3D" node_paths=PackedStringArray("info_window", "position_x", "position_y", "position_z", "ConnectedStatusPanel", "DisconnectedStatusPanel")]
 script = ExtResource("1_uxhas")
 info_window = NodePath("TurtleInfo")
 position_x = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates/XPosition")
 position_y = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates/YPosition")
 position_z = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/Coordinates/ZPosition")
+ConnectedStatusPanel = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/ConnectedStatusPannel")
+DisconnectedStatusPanel = NodePath("TurtleInfo/Control/MarginContainer/VBoxContainer/DisconnectedStatusPanel")
 
 [node name="TurtleMesh" parent="." instance=ExtResource("2_6i0b1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
@@ -52,6 +56,27 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TurtleInfo/Control/MarginContainer"]
 layout_mode = 2
+
+[node name="ConnectedStatusPannel" type="PanelContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = ExtResource("3_omv4l")
+
+[node name="ConnectedLabel" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/ConnectedStatusPannel"]
+layout_mode = 2
+text = "Connected"
+horizontal_alignment = 1
+
+[node name="DisconnectedStatusPanel" type="PanelContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = ExtResource("4_fludr")
+
+[node name="DisconnectedLabel" type="Label" parent="TurtleInfo/Control/MarginContainer/VBoxContainer/DisconnectedStatusPanel"]
+layout_mode = 2
+text = "Disconnected"
+horizontal_alignment = 1
 
 [node name="Coordinates" type="HBoxContainer" parent="TurtleInfo/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2

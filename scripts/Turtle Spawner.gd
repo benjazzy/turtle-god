@@ -1,4 +1,6 @@
-extends Node3D
+class_name TurtleSpawner extends Node3D
+
+enum Status {CONNECTED, DISCONNECTED}
 
 @export var connection: Node
 
@@ -57,7 +59,6 @@ func heading_to_rotation(char: String):
 		
 
 func _update_turtle(name: String, coordinates: Dictionary, heading: String):
-	print("Received turtle data: %s, %s, %s", name, coordinates, heading)
 	var new_position = Vector3(coordinates.x, coordinates.y, coordinates.z)
 	var rotation = heading_to_rotation(heading)
 	if rotation == null:
@@ -78,3 +79,14 @@ func _update_turtle(name: String, coordinates: Dictionary, heading: String):
 	else:
 		child.move(new_position)
 		child.global_rotation = Vector3(0, rotation, 0)
+
+
+func _on_node_turtle_status(name, status):
+	var child = self.find_child(name, true, false)
+	if child == null:
+		return
+	
+	if status == Status.CONNECTED:
+		child.set_connected()
+	else:
+		child.set_disconnected()
